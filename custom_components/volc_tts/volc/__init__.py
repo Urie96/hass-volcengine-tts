@@ -4,6 +4,7 @@ import copy
 import json
 import logging
 import uuid
+import ssl
 from collections.abc import AsyncGenerator
 
 import websockets
@@ -39,6 +40,7 @@ class VolcTTSClient:
         self.access_token = access_token
         self.voice_type = voice_type
         self.connected = False
+        self.ssl_context = ssl.create_default_context()
 
     async def connect(self):
         headers = {
@@ -52,6 +54,7 @@ class VolcTTSClient:
             "wss://openspeech.bytedance.com/api/v3/tts/bidirection",
             additional_headers=headers,
             max_size=10 * 1024 * 1024,
+            ssl=self.ssl_context,
         )
         await start_connection(websocket)
         await wait_for_event(
