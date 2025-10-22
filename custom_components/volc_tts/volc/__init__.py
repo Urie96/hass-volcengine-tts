@@ -8,7 +8,7 @@ from collections.abc import AsyncGenerator
 
 import websockets
 
-from protocols import (
+from .protocols import (
     EventType,
     MsgType,
     finish_connection,
