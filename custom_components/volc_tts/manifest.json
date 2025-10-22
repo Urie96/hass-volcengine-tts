@@ -1,0 +1,11 @@
+{
+  "codeowners": ["urie96"],
+  "config_flow": true,
+  "dependencies": [],
+  "documentation": "https://github.com/urie96/volc_tts",
+  "domain": "volc_tts",
+  "iot_class": "calculated",
+  "name": "Volcengine TTS",
+  "requirements": [],
+  "version": "1.0.0"
+}
