@@ -53,7 +53,6 @@ class VolcTTSClient:
             additional_headers=headers,
             max_size=10 * 1024 * 1024,
         )
-
         await start_connection(websocket)
         await wait_for_event(
             websocket, MsgType.FullServerResponse, EventType.ConnectionStarted
@@ -62,15 +61,16 @@ class VolcTTSClient:
         self.connected = True
 
     async def disconnect(self):
-        if self.websocket is None:
-            return
-        await finish_connection(self.websocket)
-        await wait_for_event(
-            self.websocket, MsgType.FullServerResponse, EventType.ConnectionFinished
-        )
-        await self.websocket.close()
+        websocket = self.websocket
         self.websocket = None
         self.connected = False
+        if websocket is None:
+            return
+        await finish_connection(websocket)
+        await wait_for_event(
+            websocket, MsgType.FullServerResponse, EventType.ConnectionFinished
+        )
+        await websocket.close()
 
     async def tts(self, chunk_stream: AsyncGenerator[str]):
         if not self.connected:
