@@ -22,8 +22,8 @@ class ConfigFlowHandler(ConfigFlow, domain=DOMAIN):
                 {
                     vol.Required("app_id"): str,
                     vol.Required("access_token"): str,
-                    vol.Optional(
-                        "model", default="zh_female_wanwanxiaohe_moon_bigtts"
+                    vol.Required(
+                        "voice_type", default="zh_female_wanwanxiaohe_moon_bigtts"
                     ): str,
                 },
             ),

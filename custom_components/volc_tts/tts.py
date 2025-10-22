@@ -27,10 +27,16 @@ async def async_setup_entry(
 
 
 class VolcTTSEntity(TextToSpeechEntity):
+    _attr_name = "Volcengine TTS"
+
     def __init__(self, hass: HomeAssistant, config_entry: ConfigEntry) -> None:
+        voice_type = config_entry.data["voice_type"]
+        self._attr_name = f"Volc TTS({voice_type})"
+        self._attr_unique_id = f"{config_entry.entry_id[:7]}-volc-tts"
         self.tts_client = VolcTTSClient(
             appid=config_entry.data["app_id"],
             access_token=config_entry.data["access_token"],
+            voice_type=voice_type,
         )
 
     @cached_property
@@ -40,10 +46,6 @@ class VolcTTSEntity(TextToSpeechEntity):
     @cached_property
     def supported_languages(self) -> list[str]:
         return list([DEFAULT_LANG])
-
-    @cached_property
-    def supported_options(self) -> list[str]:
-        return ["voice"]
 
     async def async_stream_tts_audio(
         self, request: TTSAudioRequest
