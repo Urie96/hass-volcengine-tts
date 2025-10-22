@@ -27,8 +27,6 @@ async def async_setup_entry(
 
 
 class VolcTTSEntity(TextToSpeechEntity):
-    _attr_name = "Volcengine TTS"
-
     def __init__(self, hass: HomeAssistant, config_entry: ConfigEntry) -> None:
         voice_type = config_entry.data["voice_type"]
         self._attr_name = f"Volc TTS({voice_type})"

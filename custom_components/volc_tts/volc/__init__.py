@@ -38,6 +38,7 @@ class VolcTTSClient:
         self.appid = appid
         self.access_token = access_token
         self.voice_type = voice_type
+        self.connected = False
 
     async def connect(self):
         headers = {
@@ -47,7 +48,7 @@ class VolcTTSClient:
             "X-Api-Connect-Id": str(uuid.uuid4()),
         }
 
-        self.websocket = await websockets.connect(
+        websocket = await websockets.connect(
             "wss://openspeech.bytedance.com/api/v3/tts/bidirection",
             additional_headers=headers,
             max_size=10 * 1024 * 1024,
@@ -57,6 +58,8 @@ class VolcTTSClient:
         await wait_for_event(
             self.websocket, MsgType.FullServerResponse, EventType.ConnectionStarted
         )
+        self.websocket = websocket
+        self.connected = True
 
     async def disconnect(self):
         if self.websocket is None:
@@ -67,8 +70,11 @@ class VolcTTSClient:
         )
         await self.websocket.close()
         self.websocket = None
+        self.connected = False
 
     async def tts(self, chunk_stream: AsyncGenerator[str]):
+        if not self.connected:
+            await self.connect()
         base_request = {
             "user": {
                 "uid": str(uuid.uuid4()),
