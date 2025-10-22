@@ -54,9 +54,9 @@ class VolcTTSClient:
             max_size=10 * 1024 * 1024,
         )
 
-        await start_connection(self.websocket)
+        await start_connection(websocket)
         await wait_for_event(
-            self.websocket, MsgType.FullServerResponse, EventType.ConnectionStarted
+            websocket, MsgType.FullServerResponse, EventType.ConnectionStarted
         )
         self.websocket = websocket
         self.connected = True
