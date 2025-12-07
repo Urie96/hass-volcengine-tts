@@ -43,7 +43,7 @@ class VolcTTSEntity(TextToSpeechEntity):
 
     @cached_property
     def supported_languages(self) -> list[str]:
-        return list([DEFAULT_LANG])
+        return list(["zh", "zh-CN"])
 
     async def async_stream_tts_audio(
         self, request: TTSAudioRequest
